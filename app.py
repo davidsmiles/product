@@ -8,7 +8,6 @@ from flask_restful import Api
 
 from extensions import *
 from resources.routes import initialize_routes
-from models.product import *
 
 app = Flask(__name__)
 

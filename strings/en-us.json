@@ -1,6 +1,6 @@
 {
-    "item_added_successfully": "Items Added",
-    "item_already_exist": "product with item_id {} already exist",
-    "item_not_exist": "product with item_id {} does not exist",
-    "item_updated": "item with item_id {} has been updated"
+    "product_added_successfully": "product added",
+    "product_already_exist": "product with item_id {} already exist",
+    "product_not_exist": "product with item_id {} does not exist",
+    "product_updated": "item with item_id {} has been updated"
   }

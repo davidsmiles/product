@@ -9,16 +9,36 @@ from models.product import Products
 class Product(Resource):
     @classmethod
     def get(cls, title):
-        product = Products.objects.get(title=title).to_json()
-        return Response(product, mimetype="application/json", status=200)
+        product = Products.objects.get(title=title)
+        if not product:
+            return {
+                'message': gettext('product_not_exist'),
+                'code': 404
+            }, 404
+
+        return Response(product.to_json(), mimetype="application/json", status=200)
 
     @classmethod
     def put(cls, title):
         data = request.get_json()
-        Products.objects.get(title=title).update(**data)
+        product = Products.objects.get(title=title)
+        if not product:
+            return {
+                'message': gettext('product_not_exist'),
+                'code': 404
+            }, 404
+        
+        product.update(**data)
         return '', 200
 
     @classmethod
     def delete(cls, title):
-        Products.objects.get(title=title).delete()
+        products.objects.get(title=title)
+        if not product:
+            return {
+                'message': gettext('product_not_exist'),
+                'code': 404
+            }, 404
+
+        product.delete()
         return '', 200
