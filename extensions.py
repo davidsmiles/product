@@ -1,7 +1,8 @@
-from flask_pymongo import PyMongo
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
+from flask_mongoengine import MongoEngine
 
-mongo = PyMongo()
-db = SQLAlchemy()
-ma = Marshmallow()
+
+db = MongoEngine()
+
+
+def initialize_extensions(app):
+    db.init_app(app)

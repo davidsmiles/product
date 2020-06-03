@@ -18,6 +18,7 @@ python-dotenv = "*"
 pylint = "*"
 Flask-SQLAlchemy = "*"
 flask-pymongo = "*"
+flask-mongoengine = "*"
 
 [requires]
 python_version = "3.6"
