@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+flask-restful = "*"
+flask-jwt-extended = "*"
+flask-testing = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+requests = "*"
+sendgrid = "*"
+python-dotenv = "*"
+pylint = "*"
+Flask-SQLAlchemy = "*"
+flask-pymongo = "*"
+
+[requires]
+python_version = "3.6"
