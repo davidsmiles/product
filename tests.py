@@ -37,7 +37,13 @@ class ProductTestCase(BaseTestCase):
                                 "name": "eyelash",
                                 "description": "a very nice eyelash",
                                 "price": 20.00
-                            }])
+                            },
+                            {
+                                "name": "hello",
+                                "description": "really nice",
+                                "price": 33
+                            }
+                            ])
         self.assertStatus(response, 200)
 
     def test_get_all_products(self):
