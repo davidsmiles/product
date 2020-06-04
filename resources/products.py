@@ -3,8 +3,8 @@ from flask import request, Response
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 
+from database.models import Products
 from libs.strings import gettext
-from models.product import Products
 
 
 class AddProduct(Resource):
@@ -15,9 +15,13 @@ class AddProduct(Resource):
         data = request.get_json()
 
         # mongodb implementation
-        Products(**data).save()
+        product = Products(**data)
+        product.save()
+
+        id = product.id
         
-        return 'OK', 200
+        return {'id': str(id)}, 200
+
 
 class AllProducts(Resource):
 

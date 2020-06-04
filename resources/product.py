@@ -2,8 +2,8 @@ from flask import request, Response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
+from database.models import Products
 from libs.strings import gettext
-from models.product import Products
 
 
 class Product(Resource):
