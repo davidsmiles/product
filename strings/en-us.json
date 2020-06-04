@@ -2,5 +2,9 @@
     "product_added_successfully": "product added",
     "product_already_exist": "product with item_id {} already exist",
     "product_not_exist": "product with item_id {} does not exist",
-    "product_updated": "item with item_id {} has been updated"
+    "product_updated": "item with item_id {} has been updated",
+
+    "collection_already_exist": "collection with title {} already exist",
+    "collection_not_exist": "collection with title {} does not exist",
+    "collection_updated": "collection updated"
   }

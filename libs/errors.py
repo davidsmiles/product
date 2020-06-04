@@ -1,8 +1,14 @@
-class InternalServerError(Exception):
+from flask_restful import HTTPException
+
+
+class CollectionExistsError(HTTPException):
+    pass
+
+class InternalServerError(HTTPException):
     pass
 
 
-class SchemaValidationError(Exception):
+class SchemaValidationError(HTTPException):
     pass
 
 
@@ -15,6 +21,10 @@ class UnauthorizedError(Exception):
 
 
 errors = {
+    "CollectionExistsError": {
+        "message": "Collection already exists",
+        "status": 204
+    },
     "InternalServerError": {
         "message": "Something went wrong",
         "status": 500

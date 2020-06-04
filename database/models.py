@@ -4,7 +4,7 @@ from extensions import db
 
 
 class Collections(db.Document):
-    name = db.StringField(max_length=20, unique=True)
+    title = db.StringField(required=True, unique=True, max_length=20)
 
 
 class Pricing(db.EmbeddedDocument):
@@ -17,7 +17,7 @@ class Inventory(db.EmbeddedDocument):
     sku = db.StringField()
     barcode = db.StringField()
     quantity = db.IntField()
-    track_quantity = db.BooleanField(default=True)
+    track_quantity = db.BooleanField()
 
 
 class Options(db.EmbeddedDocument):
@@ -29,14 +29,15 @@ class Options(db.EmbeddedDocument):
 
 class Products(db.Document):
     title = db.StringField(required=True)
-    description = db.StringField()
-    pricing = db.EmbeddedDocumentField(Pricing)
+    description = db.StringField(default="")
 
-    inventory = db.EmbeddedDocumentField(Inventory)
+    pricing = db.EmbeddedDocumentField(Pricing, default=Pricing(price=0.00, compare_at_price=0.00, cost_per_item=0.00))
+
+    inventory = db.EmbeddedDocumentField(Inventory, default=Inventory(sku="", barcode="", quantity=0, track_quantity=True))
 
     product_type = db.StringField()
     vendor = db.StringField()
     tags = db.ListField(db.StringField(max_length=30))
     variants = db.EmbeddedDocumentField(Options)
 
-    collection = db.ReferenceField(Collections)
+    collections = db.ListField(db.ReferenceField(Collections))

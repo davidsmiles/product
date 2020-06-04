@@ -2,9 +2,10 @@ import requests
 from flask import request, Response
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
+from mongoengine.errors import DoesNotExist
 
 from database.models import Collections, Products
-from libs.errors import InternalServerError, SchemaValidationError
+from libs.errors import InternalServerError
 from libs.strings import gettext
 
 
@@ -18,27 +19,36 @@ class AddProduct(Resource):
         # mongodb implementation
         try:
             if "collection" in data:
-                collection = Collections.objects.get(name=data.get("collection"))
+                collections = []
+                # Check if collection exists
+                for each in data.get("collection"):
+                    try: 
+                        collection = Collections.objects.get(title=each)
+                    except DoesNotExist:
+                        continue
+
+                    if collection:
+                        collections.append(collection)
+                
                 del(data['collection'])
 
-                if collection:
-                    product = Products(**data)
-                    product.collection = collection
-                    product.save()
-
-                    id = product.id
-                    return {'id': str(id)}, 200
-
                 product = Products(**data)
+                if len(collections) > 0:
+                    product.collections = collections
                 product.save()
 
                 _id = product.id
                 return {'id': str(_id)}, 200
 
-        except SchemaValidationError:
-            raise SchemaValidationError
+            del(data['collection'])
+            product = Products(**data)
+            product.save()
+
+            _id = product.id
+            return {'id': str(_id)}, 200
+
         except Exception:
-            raise InternalServerError
+             raise Exception
 
 
 class AllProducts(Resource):
@@ -48,6 +58,5 @@ class AllProducts(Resource):
         try:
             products = Products.objects().to_json()
             return Response(products, mimetype="application/json", status=200)
-
         except Exception:
             raise InternalServerError
