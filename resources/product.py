@@ -8,7 +8,7 @@ from libs.strings import gettext
 
 
 class Product(Resource):
-    
+
     @classmethod
     def get(cls, title):
         try:
@@ -40,12 +40,12 @@ class Product(Resource):
     @classmethod
     def delete(cls, title):
         try:
-            products.objects.get(title=title)
+            products = Products.objects.get(title=title)
         except DoesNotExist:
             return {
                 'message': gettext('product_not_exist'),
                 'code': 404
             }, 404
 
-        product.delete()
+        products.delete()
         return '', 200
