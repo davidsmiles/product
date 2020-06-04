@@ -29,8 +29,6 @@ class AddProduct(Resource):
 
                     if collection:
                         collections.append(collection)
-                
-                del(data['collection'])
 
                 product = Products(**data)
                 if len(collections) > 0:
@@ -40,8 +38,8 @@ class AddProduct(Resource):
                 _id = product.id
                 return {'id': str(_id)}, 200
 
-            del(data['collection'])
             product = Products(**data)
+            product.collections = []
             product.save()
 
             _id = product.id

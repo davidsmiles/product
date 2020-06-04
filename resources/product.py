@@ -10,9 +10,9 @@ from libs.strings import gettext
 class Product(Resource):
 
     @classmethod
-    def get(cls, _id):
+    def get(cls, id):
         try:
-            product = Products.objects.get(id=_id)
+            product = Products.objects.get(id=id)
         except DoesNotExist:
             return {
                     'message': gettext('product_not_exist'),
@@ -23,29 +23,28 @@ class Product(Resource):
 
 
     @classmethod
-    def put(cls, _id):
+    def put(cls, id):
         data = request.get_json()
         try:
-            product = Products.objects.get(id=_id)
+            product = Products.objects.get(id=id)
+            product.update(**data)
         except DoesNotExist:
             return {
                 'message': gettext('product_not_exist'),
                 'code': 404
             }, 404
         
-        product.update(**data)
-        return '', 200
+        return {}, 200
 
 
     @classmethod
-    def delete(cls, _id):
+    def delete(cls, id):
         try:
-            products = Products.objects.get(id=_id)
+            product = Products.objects.get(id=id)
+            product.delete()
         except DoesNotExist:
             return {
                 'message': gettext('product_not_exist'),
                 'code': 404
             }, 404
-
-        products.delete()
-        return '', 200
+        return {}, 200

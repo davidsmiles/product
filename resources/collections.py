@@ -42,7 +42,7 @@ class AddCollection(Resource):
                 "status": 400
             }, 400
 
-        return {}, 200
+        return {"id": str(collection.id)}, 200
 
 
 class AllCollections(Resource):
