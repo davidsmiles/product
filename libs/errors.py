@@ -1,8 +1,17 @@
 from flask_restful import HTTPException
 
 
-class CollectionExistsError(HTTPException):
+class ResourceExists(HTTPException):
     pass
+
+
+class ResourceNotExist(HTTPException):
+    pass
+
+
+class QueryInvalidError(HTTPException):
+    pass
+
 
 class InternalServerError(HTTPException):
     pass
@@ -21,12 +30,20 @@ class UnauthorizedError(Exception):
 
 
 errors = {
-    "CollectionExistsError": {
-        "message": "Collection already exists",
-        "status": 204
+    "ResourceExists": {
+        "message": "The request resource already exists",
+        "status": 404
+    },
+    "ResourceNotExist": {
+        "message": "The requested resource does not exist",
+        "status": 404
+    },
+    "QueryInvalidError": {
+        "message": "Sorry, could not resolve field(s) sent in with request",
+        "status": 500
     },
     "InternalServerError": {
-        "message": "Something went wrong",
+        "message": "Oops, something went wrong",
         "status": 500
     },
     "SchemaValidationError": {

@@ -2,10 +2,10 @@ import requests
 from flask import request, Response
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
-from mongoengine.errors import DoesNotExist
+from mongoengine.errors import DoesNotExist, InvalidQueryError
 
 from database.models import Collections, Products
-from libs.errors import InternalServerError
+from libs.errors import InternalServerError, QueryInvalidError
 from libs.strings import gettext
 
 
@@ -46,7 +46,7 @@ class AddProduct(Resource):
             return {'id': str(_id)}, 200
 
         except Exception:
-             raise Exception
+             raise InternalServerError
 
 
 class AllProducts(Resource):
@@ -54,7 +54,10 @@ class AllProducts(Resource):
     @classmethod
     def get(cls):
         try:
-            products = Products.objects().to_json()
+            query = request.values
+            products = Products.objects(**query).to_json()
             return Response(products, mimetype="application/json", status=200)
+        except InvalidQueryError:
+            raise QueryInvalidError
         except Exception:
             raise InternalServerError

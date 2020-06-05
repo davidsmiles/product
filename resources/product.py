@@ -4,6 +4,7 @@ from flask_restful import Resource
 from mongoengine.errors import DoesNotExist
 
 from database.models import Products
+from libs.errors import ResourceNotExist
 from libs.strings import gettext
 
 
@@ -13,13 +14,9 @@ class Product(Resource):
     def get(cls, id):
         try:
             product = Products.objects.get(id=id)
+            return Response(product.to_json(), mimetype="application/json", status=200)
         except DoesNotExist:
-            return {
-                    'message': gettext('product_not_exist'),
-                    'code': 404
-            }, 404
-
-        return Response(product.to_json(), mimetype="application/json", status=200)
+            raise ResourceNotExist
 
 
     @classmethod
@@ -29,10 +26,7 @@ class Product(Resource):
             product = Products.objects.get(id=id)
             product.update(**data)
         except DoesNotExist:
-            return {
-                'message': gettext('product_not_exist'),
-                'code': 404
-            }, 404
+            raise ResourceNotExist
         
         return {}, 200
 
@@ -43,8 +37,6 @@ class Product(Resource):
             product = Products.objects.get(id=id)
             product.delete()
         except DoesNotExist:
-            return {
-                'message': gettext('product_not_exist'),
-                'code': 404
-            }, 404
+            raise ResourceNotExist
+        
         return {}, 200
