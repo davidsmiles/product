@@ -18,12 +18,12 @@ class AddProduct(Resource):
 
         # mongodb implementation
         try:
-            if "collection" in data:
+            if "collections" in data:
                 collections = []
                 # Check if collection exists
-                for each in data.get("collection"):
+                for each in data.get("collections"):
                     try: 
-                        collection = Collections.objects.get(title=each)
+                        collection = Collections.objects.get(title=each.lower())
                     except DoesNotExist:
                         continue
 
@@ -46,7 +46,7 @@ class AddProduct(Resource):
             return {'id': str(_id)}, 200
 
         except Exception:
-             raise InternalServerError
+             raise Exception
 
 
 class AllProducts(Resource):

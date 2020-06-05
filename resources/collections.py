@@ -4,7 +4,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
-from database.models import Collections
+from database.models import Collections, Products
 from libs.errors import ResourceExists, ResourceNotExist
 from libs.strings import gettext
 
@@ -12,11 +12,14 @@ from libs.strings import gettext
 class Collection(Resource):
     
     @classmethod
-    def get(cls, title):
+    def get(cls, title: str):
         try:
-            collection = Collections.objects.get(title=title)
+            collection = Collections.objects.get(title=title.lower())
+
+            if collection:
+                products = Products.objects(collections__in=[collection])
             
-            return Response(collection.to_json(), mimetype="application/json", status=200)
+                return Response(products.to_json(), mimetype="application/json", status=200)
         except DoesNotExist:
            raise ResourceNotExist
 
@@ -31,6 +34,7 @@ class AddCollection(Resource):
         # mongodb implementation
         try:    
             collection = Collections(**data)
+            collection.title = collection.title.lower()
             collection.save()
         except NotUniqueError:
             raise ResourceExists
