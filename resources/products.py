@@ -54,7 +54,7 @@ class AllProducts(Resource):
     @classmethod
     def get(cls):
         try:
-            query = request.values
+            query = request.values  # ?tags=sportswear&product_type=shirt
             products = Products.objects(**query).to_json()
             return Response(products, mimetype="application/json", status=200)
         except InvalidQueryError:

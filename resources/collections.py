@@ -9,7 +9,7 @@ from libs.errors import ResourceExists, ResourceNotExist
 from libs.strings import gettext
 
 
-class Collection(Resource):
+class CollectionProducts(Resource):
     
     @classmethod
     def get(cls, title: str):
