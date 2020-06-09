@@ -50,8 +50,7 @@ class BaseTestCase(TestCase):
                 "size": ["10", "11", "12"],
                 "color": ["red", "blue"]
             },
-            "collections": ["sports"]
-        }
+            "collections": ["sports"]}
         if "collections" in data:
             collections = []
             # Check if collection exists
@@ -71,7 +70,6 @@ class BaseTestCase(TestCase):
 
             _id = product.id
 
-            global product_id
             product_id = str(_id)
 
             return {'id': str(_id)}, 200
