@@ -1,18 +1,22 @@
 import requests
+
 from flask import request, Response
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required, jwt_optional
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, InvalidQueryError
 
-from database.models import Collections, Products
 from libs.errors import InternalServerError, QueryInvalidError
 from libs.strings import gettext
 
 
-class AddProduct(Resource):
+class Products(Resource):
 
     @classmethod
+    @jwt_optional
     def post(cls):
+        
+        from database.models import Collections, Products
+
         # Get the product payload json
         data = request.get_json()
 
@@ -48,11 +52,9 @@ class AddProduct(Resource):
         except Exception:
              raise Exception
 
-
-class AllProducts(Resource):
-
     @classmethod
     def get(cls):
+        from database.models import Collections, Products
         try:
             query = request.values  # ?tags=sportswear&product_type=shirt
             products = Products.objects(**query).to_json()

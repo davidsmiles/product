@@ -1,71 +1,138 @@
 import unittest
 
 from flask_testing import TestCase
+from mongoengine.errors import DoesNotExist, InvalidQueryError
 
-from app import app
-from extensions import db
-from models.item import ItemModel
+from app import app, api
+from extensions import *
+
+from database.models import Products, Collections
+from libs.errors import *
+from resources.routes import initialize_routes
+
+
+app.config.from_object('config.TestConfig')
+
+
+# Initialize
+initialize_extensions(app)
+initialize_routes(api)
+
+
+product_id = 0
 
 
 class BaseTestCase(TestCase):
     
     def create_app(self):
-        app.config.from_object('config.TestConfig')
         return app
 
     def setUp(self):
-        db.create_all()
-        db.session.add(
-            ItemModel(
-                name='samsung a30s',
-                description='a really incredible mobile phone',
-                price=12.00
-            )
-        )
-        db.session.commit()
-    
+        global product_id
+
+        data = {
+            "title": "Madrid Jersey",
+            "description": "Very beautiful round neck shirt",
+            "pricing": {
+                "price": 120,
+                "compare_at_price": 130,
+                "cost_per_item": 110
+            },
+            "inventory": {
+                "sku": "unique_store_keeping_unit_value",
+                "quantity": 10,
+                "track_quantity": True
+            },
+            "product_type": "shirt",
+            "vendor": "D&G",
+            "tags": ["attire", "native"],
+            "variants": {
+                "size": ["10", "11", "12"],
+                "color": ["red", "blue"]
+            },
+            "collections": ["sports"]
+        }
+        if "collections" in data:
+            collections = []
+            # Check if collection exists
+            for each in data.get("collections"):
+                try: 
+                    collection = Collections.objects.get(title=each.lower())
+                except DoesNotExist:
+                    continue
+
+                if collection:
+                    collections.append(collection)
+
+            product = Products(**data)
+            if len(collections) > 0:
+                product.collections = collections
+            product.save()
+
+            _id = product.id
+
+            global product_id
+            product_id = str(_id)
+
+            return {'id': str(_id)}, 200
+
+        product = Products(**data)
+        product.collections = []
+        product.save()
+
+        product_id = product.id
+
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        Products.drop_collection()
 
 
 class ProductTestCase(BaseTestCase):
 
     def test_add_product(self):
-        response = self.client.post('/products/items', 
-                        json=[{
-                                "name": "eyelash",
-                                "description": "a very nice eyelash",
-                                "price": 20.00
-                            },
-                            {
-                                "name": "hello",
-                                "description": "really nice",
-                                "price": 33
-                            }
-                            ])
+        response = self.client.post('/products', 
+                                json={
+                                    "title": "Madrid Jersey",
+                                    "description": "Very beautiful round neck shirt",
+                                    "pricing": {
+                                        "price": 120,
+                                        "compare_at_price": 130,
+                                        "cost_per_item": 110
+                                    },
+                                    "inventory": {
+                                        "sku": "unique_store_keeping_unit_value",
+                                        "quantity": 10,
+                                        "track_quantity": True
+                                    },
+                                    "product_type": "shirt",
+                                    "vendor": "D&G",
+                                    "tags": ["attire", "native"],
+                                    "variants": {
+                                        "size": ["10", "11", "12"],
+                                        "color": ["red", "blue"]
+                                    },
+                                    "collections": ["sports"]
+                                }
+                        )
         self.assertStatus(response, 200)
 
     def test_get_all_products(self):
-        response = self.client.get('/products/items')
+        response = self.client.get('/products')
         self.assertStatus(response, 200)
 
     def test_get_product(self):
-        response = self.client.get('/products/items/1')
+        response = self.client.get(f'/products/{product_id}')
         self.assertStatus(response, 200)
 
     def test_update_product(self):
-        response = self.client.put('/products/items/1', 
+        response = self.client.put(f'/products/{product_id}', 
                         json={
-                                "name": "facelash",
-                                "description": "a very nice eyelash",
-                                "price": 27.00
+                                "title": "test-product"
                             })
         self.assertStatus(response, 200)
 
     def test_delete_product(self):
-        response = self.client.delete('/products/items/1')
-        self.assertStatus(response, 204)
+        response = self.client.delete(f'/products/{product_id}')
+        self.assertStatus(response, 200)
 
 
 if __name__ == '__main__':

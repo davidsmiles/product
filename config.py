@@ -16,6 +16,9 @@ class TestConfig(BaseConfig):
     TESTING = True
     WTF_CSRF_ENABLED = False
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    MONGODB_SETTINGS = {
+        'host': os.environ.get("PROD_DATABASE_URL", "mongodb://localhost:27017/app-testing")
+    }
 
 
 class DevelopmentConfig(BaseConfig):
