@@ -56,7 +56,7 @@ class Products(Resource):
     def get(cls):
         from database.models import Collections, Products
         try:
-            query = request.values  # ?tags=sportswear&product_type=shirt
+            query = request.values  # ?tags=sportswear&type=shirt
             products = Products.objects(**query).to_json()
             return Response(products, mimetype="application/json", status=200)
         except InvalidQueryError:

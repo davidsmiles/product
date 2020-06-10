@@ -35,7 +35,7 @@ class Products(db.Document):
 
     inventory = db.EmbeddedDocumentField(Inventory, default=Inventory(sku="", barcode="", quantity=0, track_quantity=True))
 
-    product_type = db.StringField()
+    type = db.StringField()
     vendor = db.StringField()
     tags = db.ListField(db.StringField(max_length=30))
     variants = db.EmbeddedDocumentField(Options)

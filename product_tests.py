@@ -43,7 +43,7 @@ class BaseTestCase(TestCase):
                 "quantity": 10,
                 "track_quantity": True
             },
-            "product_type": "shirt",
+            "type": "shirt",
             "vendor": "D&G",
             "tags": ["attire", "native"],
             "variants": {
@@ -101,7 +101,7 @@ class ProductTestCase(BaseTestCase):
                                         "quantity": 10,
                                         "track_quantity": True
                                     },
-                                    "product_type": "shirt",
+                                    "type": "shirt",
                                     "vendor": "D&G",
                                     "tags": ["attire", "native"],
                                     "variants": {
