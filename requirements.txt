@@ -2,9 +2,6 @@ Flask
 Flask-Restful
 flask-jwt-extended
 flask-testing
-flask-sqlalchemy
-flask-marshmallow
-marshmallow-sqlalchemy
 requests
 sendgrid
 python-dotenv
