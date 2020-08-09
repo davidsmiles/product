@@ -8,3 +8,4 @@ python-dotenv
 pylint
 flask-mongoengine
 uwsgi
+pymongo[srv]

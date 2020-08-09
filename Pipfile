@@ -18,6 +18,7 @@ pylint = "*"
 flask-pymongo = "*"
 flask-mongoengine = "*"
 uwsgi = "*"
+pymongo = {extras = ["srv"],version = "*"}
 
 [requires]
 python_version = "3.6"
