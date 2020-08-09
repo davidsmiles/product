@@ -29,3 +29,7 @@ class DevelopmentConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     ENV = 'production'
     DEBUG = False
+    MONGODB_SETTINGS = {
+        # 'host': os.environ.get("PROD_DATABASE_URL", "mongodb://david:secret@database/webshop")
+        'host': os.environ.get("MONGODB_URI", "mongodb://localhost:27017/webshop")
+    }
