@@ -17,6 +17,7 @@ python-dotenv = "*"
 pylint = "*"
 flask-pymongo = "*"
 flask-mongoengine = "*"
+uwsgi = "*"
 
 [requires]
 python_version = "3.6"
