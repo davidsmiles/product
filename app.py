@@ -21,6 +21,11 @@ api = Api(app, errors=errors)
 jwt = JWTManager(app)
 
 
+@app.route('/')
+def index():
+    return 'Hello bro'
+
+
 if __name__ == '__main__':
     initialize_extensions(app)
     initialize_routes(api)
