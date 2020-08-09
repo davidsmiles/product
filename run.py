@@ -1,6 +1,4 @@
-from app import app
-from api import api
-
+from app import app, api
 
 initialize_extensions(app)
 initialize_routes(api)
