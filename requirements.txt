@@ -7,3 +7,4 @@ sendgrid
 python-dotenv
 pylint
 flask-mongoengine
+uwsgi
