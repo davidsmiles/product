@@ -21,7 +21,8 @@ class TestConfig(BaseConfig):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     MONGODB_SETTINGS = {
-        'host': os.environ.get("PROD_DATABASE_URL", "mongodb://david:secret@database/webshop")
+        # 'host': os.environ.get("PROD_DATABASE_URL", "mongodb://david:secret@database/webshop")
+        'host': os.environ.get("PROD_DATABASE_URL", "mongodb://localhost:27017/webshop")
     }
 
 
