@@ -14,7 +14,7 @@ class TestConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     MONGODB_SETTINGS = {
-        'host': os.environ.get("PROD_DATABASE_URL", "mongodb://localhost:27017/app-testing")
+        'host': os.environ.get("MONGODB_URI", "mongodb://localhost:27017/app-testing")
     }
 
 
@@ -22,7 +22,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     MONGODB_SETTINGS = {
         # 'host': os.environ.get("PROD_DATABASE_URL", "mongodb://david:secret@database/webshop")
-        'host': os.environ.get("PROD_DATABASE_URL", "mongodb://localhost:27017/webshop")
+        'host': os.environ.get("MONGODB_URI", "mongodb://localhost:27017/webshop")
     }
 
 
@@ -31,5 +31,6 @@ class ProductionConfig(BaseConfig):
     DEBUG = False
     MONGODB_SETTINGS = {
         # 'host': os.environ.get("PROD_DATABASE_URL", "mongodb://david:secret@database/webshop")
+        'connect': False,
         'host': os.environ.get("MONGODB_URI", "mongodb://localhost:27017/webshop")
     }
